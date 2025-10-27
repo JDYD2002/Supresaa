@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presente Surpresa</title>
+<style>
+/* ===== CSS ===== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background:#222;
+  display:flex; justify-content:center; align-items:center;
+  flex-direction:column;
+  height:100vh; overflow:hidden;
+  font-family:sans-serif;
+}
+
+.presente {
+  width:400px;
+  height:400px;
+  position:relative;
+  display:flex;
+  flex-direction:column-reverse;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.caixa {
+  width:260px;
+  height:170px;
+  background:crimson;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:0 0 10px 10px;
+  position:relative;
+  overflow:visible;
+}
+
+.caixa > .fita { width:70px; height:100%; }
+.fita { background:gold; }
+
+.topo {
+  width:280px;
+  height:80px;
+  background:crimson;
+  border-radius:10px;
+  display:flex;
+  justify-content:center;
+  filter:drop-shadow(0 2px 3px);
+}
+
+.topo .fita { width:100px; height:100%; }
+.laco { display:flex; justify-content:center; }
+.volta { border:10px solid goldenrod; width:90px; height:45px; border-radius:50%/100% 50% 50% 0; }
+.volta.esq { transform:rotateY(180deg); }
+
+.container { transition:0.3s ease; }
+.caixa:hover + .container, .caixa.abrir + .container { transform:rotate(-15deg) translateY(-4rem); }
+
+/* GIF de surpresa */
+.surpresa {
+  display:none;
+  position:absolute;
+  width:400px;
+  height:auto;
+  bottom:130%;
+  transform:translateY(30px);
+  animation:pular 1.4s ease forwards;
+  z-index:5;
+}
+
+/* Texto "SURPRESA" */
+.texto-surpresa {
+  display:none;
+  position:absolute;
+  top:-300px;
+  color:gold;
+  font-size:2.6rem;
+  font-weight:bold;
+  text-shadow:0 0 20px #ff0000, 0 0 25px #fff, 0 0 40px #ff0;
+  animation:subirTexto 1.2s ease forwards;
+  z-index:10;
+}
+
+/* Confetes (macarrões coloridos) */
+.confete {
+  position:absolute;
+  width:14px;
+  height:40px;
+  border-radius:4px;
+  opacity:0.95;
+  transform:rotate(0deg);
+  animation:cair 2.8s linear forwards;
+  z-index:20;
+}
+
+/* Animações */
+@keyframes pular {
+  0% { transform: translateY(120px) scale(0.5); opacity:0; }
+  60% { transform: translateY(-220px) scale(1.1); opacity:1; }
+  100% { transform: translateY(-200px) scale(1); opacity:1; }
+}
+
+@keyframes subirTexto {
+  0% { opacity:0; transform:translateY(40px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+@keyframes cair {
+  0% { transform:translateY(0) rotate(0deg); opacity:1; }
+  100% { transform:translateY(500px) rotate(720deg); opacity:0; }
+}
+
+/* Botão */
+button {
+  padding:10px 25px;
+  font-size:1.1rem;
+  cursor:pointer;
+  border:none;
+  border-radius:8px;
+  background:gold;
+  color:#222;
+  font-weight:bold;
+  transition:0.3s;
+  box-shadow:0 0 10px gold;
+}
+button:hover { background:orange; box-shadow:0 0 20px orange; }
+</style>
+</head>
+<body>
+
+<div class="presente" id="presente">
+  <div class="caixa" id="caixa">
+    <div class="fita"></div>
+
+    <!-- GIF que salta -->
+    <img src="mare.gif" 
+         alt="Confetes" class="surpresa" id="surpresa">
+
+    <!-- Texto da surpresa -->
+    <h2 class="texto-surpresa" id="texto-surpresa">🎉 SURPRESA 🎁</h2>
+  </div>
+
+  <div class="container" id="container">
+    <div class="laco">
+      <div class="volta esq"></div>
+      <div class="volta"></div>
+    </div>
+
+    <div class="topo">
+      <div class="fita"></div>
+    </div>
+  </div>
+</div>
+
+<button id="sair">Sair</button>
+
+<script>
+// ===== JS =====
+const btnSair = document.getElementById('sair');
+const caixa = document.getElementById('caixa');
+const surpresa = document.getElementById('surpresa');
+const textoSurpresa = document.getElementById('texto-surpresa');
+const presente = document.getElementById('presente');
+
+btnSair.addEventListener('click', () => {
+  caixa.classList.add('abrir');
+  setTimeout(() => {
+    surpresa.style.display = 'block';
+    textoSurpresa.style.display = 'block';
+    gerarConfetes();
+  }, 400);
+});
+
+function gerarConfetes() {
+  for (let i=0; i<100; i++) {
+    const confete = document.createElement('div');
+    confete.classList.add('confete');
+    confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+    confete.style.left = `${Math.random()*100}%`;
+    confete.style.top = `${Math.random() * -400}px`; // sobe até -400px
+    confete.style.transform = `rotate(${Math.random()*360}deg)`;
+    confete.style.animationDuration = `${2 + Math.random()}s`;
+    confete.style.animationDelay = `${Math.random()}s`;
+    presente.appendChild(confete);
+    setTimeout(()=>confete.remove(), 3000);
+  }
+}
+</script>
+</body>
+</html>
