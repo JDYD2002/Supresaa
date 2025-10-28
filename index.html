@@ -127,6 +127,24 @@ button {
   box-shadow:0 0 10px gold;
 }
 button:hover { background:orange; box-shadow:0 0 20px orange; }
+
+/* ===== Responsividade ===== */
+@media (max-width: 480px) {
+
+.presente {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 40px; /* aumenta para empurrar mais pra baixo */
+  }
+  .caixa { width:160px; height:100px; margin-bottom: 40px; /* aumenta para empurrar mais pra baixo */ }
+  .caixa > .fita { width:50px; height:100%; }
+  .topo { width:180px; height:50px; }
+  .topo .fita { width:70px; height:100%; }
+  .volta { width:60px; height:30px; border-width:6px; }
+  .surpresa { width:200px; bottom:150%; }
+  .texto-surpresa { font-size:1.6rem; top:-180px; }
+  button { font-size:1rem; padding:8px 20px; }
+}
 </style>
 </head>
 <body>
@@ -180,7 +198,7 @@ function gerarConfetes() {
     confete.classList.add('confete');
     confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
     confete.style.left = `${Math.random()*100}%`;
-    confete.style.top = `${Math.random() * -400}px`; // sobe até -400px
+    confete.style.top = `${Math.random() * -400}px`;
     confete.style.transform = `rotate(${Math.random()*360}deg)`;
     confete.style.animationDuration = `${2 + Math.random()}s`;
     confete.style.animationDelay = `${Math.random()}s`;
